@@ -48,7 +48,7 @@
   height: 80vh; /* Reduz a altura ocupada para centralizar melhor */
   width: 60%; /* Reduz a largura da seção central */
   margin: 0 auto; /* Centraliza horizontalmente */
-  background-image: url(https://github.com/MClayton1103/Quiz-App/blob/main/orange-question-mark-background-with-text-space_1017-27394.avif); /* Caminho correto da imagem */
+  background-image: url(orange-question-mark-background-with-text-space_1017-27394.avif); 
   background-size: cover; /* Ajusta a imagem para cobrir o fundo */
   background-repeat: no-repeat; /* Impede a repetição da imagem */
   background-position: center; /* Centraliza a imagem no fundo */

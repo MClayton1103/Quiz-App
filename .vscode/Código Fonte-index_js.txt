@@ -1,0 +1,58 @@
+const questions = [
+    {
+        question: "What is the capital of France?",
+        choices: ["Paris", "London", "Berlin", "Madrid"],
+        correctAnswer: "Paris"
+    },
+    {
+        question: "What is 2 + 2?",
+        choices: ["3", "4", "5", "6"],
+        correctAnswer: "4"
+    },
+    {
+        question: "What is the color of the sky?",
+        choices: ["Blue", "Green", "Yellow", "Red"],
+        correctAnswer: "Blue"
+    }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion() {
+    const question = questions[currentQuestion];
+    document.getElementById("question").textContent = question.question;
+    const choicesContainer = document.getElementById("choices");
+    choicesContainer.innerHTML = "";
+
+    question.choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.textContent = choice;
+        button.onclick = () => checkAnswer(choice);
+        choicesContainer.appendChild(button);
+    });
+}
+
+function checkAnswer(answer) {
+    const question = questions[currentQuestion];
+    if (answer === question.correctAnswer) {
+        score++;
+    }
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+    const quizBox = document.getElementById("quiz-box");
+    quizBox.innerHTML = `<h2>Your score: ${score}/${questions.length}</h2>`;
+}
+
+function nextQuestion() {
+    loadQuestion();
+}
+
+window.onload = loadQuestion;

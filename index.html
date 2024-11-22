@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Interativo</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+<div class="container mt-5">
+ 
+  <!-- Página Inicial -->
+  <div id="main-page" class="text-center">
+    <h1>Bem-vindo ao Quiz Interativo</h1>
+    <div class="mt-5">
+      <button id="play-button" class="btn btn-primary btn-lg">Jogar</button>
+      <button id="admin-button" class="btn btn-warning btn-lg">Administração</button>
+      <button id="dashboard-button" class="btn btn-info btn-lg mt-3">Dashboard</button>
+    </div>
+  </div>
+  
+  <!-- Seção do Dashboard -->
+<div id="dashboard-container" class="d-none">
+  <h3>Ranking dos Jogadores</h3>
+  <div id="leaderboard-display"></div>
+  <div id="current-time" class="current-time"></div>
+  <button id="back-to-main-dashboard" class="btn btn-secondary">Voltar</button>
+  </div>
+</div>
+
+  <!-- Interface do Quiz -->
+  <div id="quiz-container" class="d-none">
+      <button id="back-to-main-play" class="btn btn-secondary btn-lg mb-3">Voltar</button>
+    <div id="quiz-container" class="quiz-container card p-4 shadow">
+      <div class="questions-container">
+        <h3 class="question mb-4 text-center">Quiz Interativo</h3>
+        <div class="answers-container btn-group-vertical w-100">
+          <!-- Botões de resposta gerados dinamicamente -->
+        </div>
+      </div>
+      
+      <!-- Temporizador -->
+      <div class="timer-container mt-3 hide text-center">
+        <h5>Tempo Restante:</h5>
+        <div id="timer" class="alert alert-warning" role="alert">
+          00:00
+        </div>
+      </div>
+      
+      <!-- Entrada para Nome do Jogador -->
+      <div class="form-group mt-4 text-center">
+        <label for="player-name">Nome do Jogador:</label>
+        <input type="text" id="player-name" class="form-control" placeholder="Digite seu nome" required>
+        <div id="name-error" class="text-danger mt-2" style="display: none;">Por favor, insira seu nome para começar o quiz.</div>
+      </div>
+      <!-- Botões de Controle do Quiz -->
+      <div class="controls-container mt-4 text-center">
+        <button class="start-quiz btn btn-primary btn-lg">Começar Quiz!</button>
+        <button class="next-question btn btn-success btn-lg hide">Próxima pergunta</button>
+        <button class="help-button btn btn-warning btn-lg hide">Usar Ajuda (Eliminar 2)</button> 
+    </div>
+    </div>
+  
+    <!-- Seção de Escolha de Modo de Jogo -->
+    <div class="game-mode-container card mt-5 p-4 shadow text-center">
+      <h3>Escolher Modo de Jogo</h3>
+      <button class="select-mode btn btn-warning btn-lg mt-3">Selecionar Modo de Jogo</button>
+      
+      <!-- Seleção de Tema -->
+      <div class="theme-selection mt-4 hide">
+        <label for="theme-select">Escolha o Tema:</label>
+        <select id="theme-select" class="form-control">
+          <option value="geral">Geral</option>
+          <option value="historia">História</option>
+          <option value="ciencia">Ciência</option>
+          <option value="esportes">Esportes</option>
+        </select>
+        <button class="confirm-theme btn btn-info btn-lg mt-3">Confirmar Tema</button>
+        <!-- Modos Especiais -->
+      <div class="special-modes mt-4">
+        <h5>Modos de Jogo Especiais</h5>
+        <button class="special-mode btn btn-outline-dark btn-lg mt-2" data-mode="tempo">Contra o Tempo</button>
+      </div>
+    </div>
+      </div>
+      
+  
+  </div>
+
+  <!-- Modo Administração -->
+  <div id="admin-container" class="d-none">
+      <button id="back-to-main-admin" class="btn btn-secondary btn-lg mb-3">Voltar</button>
+     <!-- Modo Administrador com Login -->
+  <div class="admin-container card mt-5 p-4 shadow">
+    <h3>Modo Administrador - Gerenciar Perguntas e Usuários</h3>
+
+    <!-- Login para Acesso às Funções do Administrador -->
+    <div id="admin-login-section">
+      <div class="form-group">
+        <label for="admin-username">Usuário:</label>
+        <input type="text" id="admin-username" class="form-control" placeholder="Digite o nome de usuário" required>
+      </div>
+      <div class="form-group">
+        <label for="admin-password">Senha:</label>
+        <input type="password" id="admin-password" class="form-control" placeholder="Digite a senha" required>
+      </div>
+      <button id="admin-login-button" class="btn btn-primary btn-block">Entrar</button>
+      <div id="login-error" class="text-danger mt-2 text-center" style="display: none;">Credenciais inválidas</div>
+    </div>
+
+    <!-- Painel de Gerenciamento de Perguntas (inicialmente oculto) -->
+    <div id="question-management" class="mt-4" style="display: none;">
+      <h4>Perguntas Adicionadas</h4>
+<div id="questions-display" class="mt-3">
+  
+  <!-- As perguntas adicionadas serão exibidas aqui -->
+</div>
+      <form id="quiz-form" class="mt-3">
+        <div class="form-group">
+          <label for="new-question">Pergunta:</label>
+          <input type="text" id="new-question" class="form-control" placeholder="Digite a nova pergunta" required>
+        </div>
+
+        <div class="form-group">
+    <label for="theme-select">Escolha o Tema:</label>
+    <select id="theme-select" class="form-control">
+        <option value="geral">Geral</option>
+        <option value="novo-tema">Novo Tema (digite um novo tema)</option> <!-- Novo tema -->
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="new-category">Novo Tema (digite um novo tema):</label>
+    <input type="text" id="new-category" class="form-control" placeholder="Digite um novo tema" required>
+    <small class="form-text text-muted">Este tema não pode ser um tema já definido.</small>
+</div>
+
+        <div class="form-group">
+          <label>Respostas:</label>
+          <div class="input-group mb-2">
+            <input type="text" class="new-answer form-control" placeholder="Resposta 1" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <input type="radio" name="correct-answer" value="0"> Correta
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-2">
+            <input type="text" class="new-answer form-control" placeholder="Resposta 2" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <input type="radio" name="correct-answer" value="1"> Correta
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-2">
+            <input type="text" class="new-answer form-control" placeholder="Resposta 3">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <input type="radio" name="correct-answer" value="2"> Correta
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-2">
+            <input type="text" class="new-answer form-control" placeholder="Resposta 4">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <input type="radio" name="correct-answer" value="3"> Correta
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="add-question btn btn-info btn-lg btn-block">Adicionar Pergunta</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Seção do Ranking -->
+<div id="leaderboard-management" class="d-none mt-4">
+  <h4>Ranking dos Jogadores</h4>
+  <div id="admin-leaderboard-display" class="mt-3">
+      <!-- Jogadores do ranking serão exibidos aqui -->
+  </div>
+  <button id="back-to-main-dashboard" class="btn btn-secondary btn-lg mt-3">Voltar</button>
+</div>
+  </div>
+</div>
+
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="index.js"></script>
+
+<script>
+  // JavaScript para controle de acesso ao painel de administrador
+  
+  document.addEventListener("DOMContentLoaded", function() {
+    const loginButton = document.getElementById("admin-login-button");
+    const loginError = document.getElementById("login-error");
+    const questionManagement = document.getElementById("question-management");
+    const manageLeaderboardButton = document.getElementById("manage-leaderboard"); // Adicionado
+
+    loginButton.addEventListener("click", function() {
+        const username = document.getElementById("admin-username").value;
+        const password = document.getElementById("admin-password").value;
+
+        // Credenciais predefinidas para login
+        const validUsername = "admin";
+        const validPassword = "senha123";
+
+        if (username === validUsername && password === validPassword) {
+            // Login bem-sucedido: exibe o painel de gerenciamento e oculta a seção de login
+            questionManagement.style.display = "block";
+            document.getElementById("admin-login-section").style.display = "none";
+            manageLeaderboardButton.style.display = "block"; // Exibe o botão de gerenciamento de ranking
+        } else {
+            // Exibe mensagem de erro para login incorreto
+            loginError.style.display = "block";
+        }
+    });
+});
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+  const mainPage = document.getElementById("main-page");
+  const playButton = document.getElementById("play-button");
+  const adminButton = document.getElementById("admin-button");
+  const backToMainPlay = document.getElementById("back-to-main-play");
+  const backToMainAdmin = document.getElementById("back-to-main-admin");
+  const quizContainer = document.getElementById("quiz-container");
+  const adminContainer = document.getElementById("admin-container");
+
+  //Redireciona para o Quiz
+    playButton.addEventListener("click", function () {
+      mainPage.classList.add("d-none");
+      quizContainer.classList.remove("d-none");
+    });
+
+    // Redireciona para Administração
+    adminButton.addEventListener("click", function () {
+      mainPage.classList.add("d-none");
+      adminContainer.classList.remove("d-none");
+    });
+
+    // Voltar para a página principal a partir da página "Jogar"
+    backToMainPlay.addEventListener("click", function () {
+      quizContainer.classList.add("d-none"); // Esconde a página de jogo
+      mainPage.classList.remove("d-none"); // Exibe a página principal
+    });
+
+    // Voltar para a página principal a partir da página "Administração"
+    backToMainAdmin.addEventListener("click", function () {
+      adminContainer.classList.add("d-none"); // Esconde a página de administração
+      mainPage.classList.remove("d-none"); // Exibe a página principal
+    });
+});
+
+
+</script>
+
+</body>
+</html>

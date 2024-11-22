@@ -1,0 +1,205 @@
+#dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 80%; /* Largura maior para o dashboard */
+  margin: 20px auto; /* Centraliza o dashboard na página */
+}
+
+#dashboard-container h3 {
+  font-size: 2rem;
+  color: #343a40;
+  margin-bottom: 20px;
+}
+
+#leaderboard-display {
+  width: 100%;
+  max-height: 300px; /* Limita a altura do ranking */
+  overflow-y: auto; /* Adiciona rolagem se necessário */
+  border: 1px solid #f39c12; /* Borda vibrante */
+  border-radius: 8px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+#leaderboard-display p {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 5px 0; /* Espaçamento entre as entradas do leaderboard */
+}
+
+#back-to-main-dashboard {
+  margin-top: 20px; /* Espaçamento acima do botão */
+}
+.d-none {
+  display: none;
+}
+/* Estilo para a página principal */
+#main-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* Reduz a altura ocupada para centralizar melhor */
+  width: 60%; /* Reduz a largura da seção central */
+  margin: 0 auto; /* Centraliza horizontalmente */
+  background-image: url(.vscode/orange-question-mark-background-with-text-space_1017-27394.avif); /* Caminho correto da imagem */
+  background-size: cover; /* Ajusta a imagem para cobrir o fundo */
+  background-repeat: no-repeat; /* Impede a repetição da imagem */
+  background-position: center; /* Centraliza a imagem no fundo */
+  border-radius: 15px; /* Bordas arredondadas para visual mais elegante */
+  padding: 20px; /* Espaçamento interno para os elementos */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra leve para destacar a seção */
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9); /* Adiciona um leve fundo branco com transparência */
+}
+
+
+#main-page h1 {
+  font-size: 3rem; /* Tamanho maior para a frase principal */
+  color: #343a40; /* Cor escura para destaque */
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+#main-page button {
+  width: 300px; /* Largura maior para facilitar o clique */
+  height: 70px; /* Altura maior para tornar os botões mais visíveis */
+  font-size: 1.5rem; /* Texto maior */
+  margin: 15px 0; /* Espaçamento entre os botões */
+  border-radius: 10px; /* Bordas arredondadas */
+  transition: all 0.3s ease; /* Suavização no efeito hover */
+}
+
+/* Cores e efeitos ao passar o mouse */
+#main-page #play-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+#main-page #play-button:hover {
+  background-color: #0056b3; /* Azul mais escuro no hover */
+}
+
+#main-page #admin-button {
+  background-color: #ff6207;
+  color: #212529;
+}
+
+#main-page #admin-button:hover {
+  background-color: #e06500; /* Amarelo mais escuro no hover */
+}
+
+
+body {
+  background-color: #307bc7;
+  font-family: Arial, sans-serif;
+  background-image: url(.vscode/360_F_922262638_T2jTFVZCXwbzEhiB2uzG2GyWXdDRo7ll.jpg);
+  max-width: 1300px; /* Defina a largura máxima desejada */
+  margin: auto; /* Centraliza o corpo */
+  padding: 20px; /* Adicione um padding, se necessário */
+}
+
+.question {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333; /* Tornando o texto da pergunta mais visível */
+}
+
+.answers-container .answer {
+  font-size: 1.1rem;
+  padding: 12px;
+  font-weight: bold; /* Negrito para aumentar a visibilidade */
+  color: #333; /* Cor escura para contraste */
+}
+
+.hide {
+  display: none;
+}
+
+.correct {
+  background-color: #28a745 !important;
+  color: #fff;
+  font-weight: bold;
+}
+
+.incorrect {
+  background-color: #dc3545 !important;
+  color: #fff;
+  font-weight: bold;
+}
+
+.final-message {
+  font-size: 1.25rem;
+  text-align: center;
+  font-weight: bold; /* Negrito para a mensagem final */
+  color: #333; /* Cor escura para maior contraste */
+}
+
+/* Mudança nas bordas dos painéis (boards) */
+.quiz-container,
+.game-mode-container,
+.admin-container {
+  border: 2px solid #f39c12; /* Cor vibrante laranja */
+  border-radius: 8px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9); /* Fundo um pouco mais opaco para o texto ficar mais visível */
+}
+
+.quiz-container h3,
+.game-mode-container h3,
+.admin-container h3 {
+  font-weight: bold;
+  color: #333; /* Título em cor escura para maior contraste */
+}
+
+/* Adicionando uma cor de borda para os botões também */
+button {
+  background-color: #f39c12; /* Cor vibrante laranja para os botões */
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  width: 100%;
+  font-weight: bold; /* Negrito nos botões para maior destaque */
+}
+
+button:hover {
+  background-color: #e67e22; /* Tom laranja mais escuro */
+  transform: scale(1.05);
+}
+button.btn-secondary {
+  margin-top: 10px;
+  font-size: 18px;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #6c757d;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+#current-time {
+  font-size: 1.2rem; /* Tamanho da fonte */
+  color: #343a40; /* Cor escura para contraste */
+  background-color: rgba(228, 157, 4, 0.8); /* Fundo com leve transparência */
+  padding: 10px 15px; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra leve para destaque */
+  margin-top: 20px; /* Espaçamento acima do elemento */
+  text-align: center; /* Centraliza o texto */
+  border: 1px solid #f39c12; /* Borda vibrante */
+}

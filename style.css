@@ -99,7 +99,7 @@
 body {
   background-color: #307bc7;
   font-family: Arial, sans-serif;
-  background-image: url(https://github.com/MClayton1103/Quiz-App/blob/main/.vscode/360_F_922262638_T2jTFVZCXwbzEhiB2uzG2GyWXdDRo7ll.jpg);
+  background-image: url(.vscode/360_F_922262638_T2jTFVZCXwbzEhiB2uzG2GyWXdDRo7ll.jpg);
   max-width: 1300px; /* Defina a largura máxima desejada */
   margin: auto; /* Centraliza o corpo */
   padding: 20px; /* Adicione um padding, se necessário */

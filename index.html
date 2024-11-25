@@ -14,7 +14,7 @@
  
   <!-- Página Inicial -->
   <div id="main-page" class="text-center">
-    <h1>Quiz App</h1>
+    <h1>Bem-vindo ao Quiz Interativo</h1>
     <div class="mt-5">
       <button id="play-button" class="btn btn-primary btn-lg">Jogar</button>
       <button id="admin-button" class="btn btn-warning btn-lg">Administração</button>
@@ -42,12 +42,16 @@
         </div>
       </div>
       
+      <!-- Temporizador para Modo Contra-Tempo -->
+      <div class="contra-time-timer-container mt-3 hide text-center">
+        <h5>Tempo Restante (Modo Contra-Tempo):</h5>
+        <div id="contra-time-timer" class="alert alert-danger" role="alert">00:00</div>
+      </div>
+      
       <!-- Temporizador -->
       <div class="timer-container mt-3 hide text-center">
         <h5>Tempo Restante:</h5>
-        <div id="timer" class="alert alert-warning" role="alert">
-          00:00
-        </div>
+        <div id="timer" class="alert alert-warning" role="alert">00:00</div>
       </div>
       
       <!-- Entrada para Nome do Jogador -->
@@ -82,7 +86,8 @@
         <!-- Modos Especiais -->
       <div class="special-modes mt-4">
         <h5>Modos de Jogo Especiais</h5>
-        <button class="special-mode btn btn-outline-dark btn-lg mt-2" data-mode="tempo">Contra o Tempo</button>
+        <button class="special-mode btn btn-outline-dark btn-lg mt-2" data-mode="tempo">Modo Relâmpago</button>
+        <button class="special-mode btn btn-outline-dark btn-lg mt-2" data-mode="contra-tempo">Modo Contra-Tempo</button>
       </div>
     </div>
       </div>
@@ -250,8 +255,13 @@
 
     // Voltar para a página principal a partir da página "Jogar"
     backToMainPlay.addEventListener("click", function () {
-      quizContainer.classList.add("d-none"); // Esconde a página de jogo
-      mainPage.classList.remove("d-none"); // Exibe a página principal
+    if (!isGameActive) { // Verifica se o jogo não está ativo
+        quizContainer.classList.add("d-none"); // Esconde a página de jogo
+        mainPage.classList.remove("d-none"); // Exibe a página principal
+    } else {
+        alert("Você não pode voltar enquanto o jogo está em andamento ou simplesmente faz um refresh da página para sair do jogo.");
+    }
+  
     });
 
     // Voltar para a página principal a partir da página "Administração"

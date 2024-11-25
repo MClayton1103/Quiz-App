@@ -277,6 +277,8 @@ function startGame() {
 
     // Carregar perguntas do localStorage
     loadQuestionsFromLocalStorage();
+    
+    document.getElementById("game-mode-section").classList.add("hide");
 
     // Atualiza a lista filtrada com base no tema selecionado
     filteredQuestions = questionsList.filter(q => q.category === selectedTheme);

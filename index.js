@@ -23,7 +23,6 @@ const quizContainer = document.querySelector(".quiz-container");
 
 
 // Adiciona o temporizador ao contêiner de perguntas
-$questionsContainer.appendChild($timerDisplay);
 $timerDisplay.classList.add('alert', 'alert-warning', 'text-center', 'mt-3');
 
 let currentQuestionIndex = 0;
@@ -51,9 +50,22 @@ function loadQuestionsFromLocalStorage() {
     const savedQuestions = localStorage.getItem('questionsList');
     if (savedQuestions) {
         questionsList = JSON.parse(savedQuestions);
-        console.log("Perguntas carregadas:", questionsList); // Verifique as perguntas carregadas
+        console.log("Perguntas carregadas:", questionsList);
         displayQuestions();
     }
+
+    const savedCategories = localStorage.getItem('categories');
+    if (savedCategories) {
+        const categoriesArray = JSON.parse(savedCategories);
+        categoriesArray.forEach(category => {
+            if (!categories[category]) {
+                categories[category] = []; // Cria a categoria se não existir
+            }
+        });
+    }
+}
+function saveCategoriesToLocalStorage() {
+    localStorage.setItem('categories', JSON.stringify(Object.keys(categories)));
 }
 
 // Chame a função loadQuestionsFromLocalStorage quando o programa iniciar
@@ -94,6 +106,7 @@ function addQuestion() {
 
     // Salva no localStorage
     saveQuestionsToLocalStorage();
+    saveCategoriesToLocalStorage(); // Salva os temas no localStorage
     updateThemeSelection(); // Atualiza a seleção de temas
     alert("Pergunta adicionada com sucesso!");
     displayQuestions(); // Atualiza a exibição das perguntas
@@ -104,7 +117,7 @@ function updateThemeSelection() {
     $themeSelect.innerHTML = ""; // Limpa os temas exibidos
 
     Object.keys(categories).forEach(category => {
-        if (category !== "geral") { // Não adiciona "Geral" novamente
+        if (categories[category].length > 0) { // Apenas adiciona se houver perguntas
             const option = document.createElement("option");
             option.value = category;
             option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
@@ -112,8 +125,8 @@ function updateThemeSelection() {
         }
     });
 
-    // Adiciona a opção "Geral" apenas uma vez
-    if (!Array.from($themeSelect.options).some(option => option.value === "geral")) {
+    // Adiciona a opção "Geral" apenas uma vez, se houver perguntas
+    if (!Array.from($themeSelect.options).some(option => option.value === "geral") && categories['geral'].length > 0) {
         const generalOption = document.createElement("option");
         generalOption.value = "geral";
         generalOption.textContent = "Geral";
@@ -166,15 +179,17 @@ function editQuestion(questionId) {
     const newCategory = prompt("Edite a categoria:", question.category) || question.category;
     const newAnswers = question.answers.map((answer, index) => {
         const newText = prompt(`Resposta ${index + 1}:`, answer.text) || answer.text;
-        return { text: newText, correct: answer.correct };
+        return { text: newText, correct: false }; // Inicialmente marcar todas como falsas
     });
 
     const newCorrectAnswerIndex = parseInt(prompt("Digite o índice da resposta correta (0 a 3):")) || question.correctAnswerIndex;
 
+    // Marcar a nova resposta correta
+    newAnswers[newCorrectAnswerIndex].correct = true;
+
     question.text = newQuestionText;
     question.category = newCategory;
     question.answers = newAnswers;
-    question.correctAnswerIndex = isNaN(newCorrectAnswerIndex) ? question.correctAnswerIndex : newCorrectAnswerIndex;
 
     saveQuestionsToLocalStorage(); // Salva no localStorage
 
@@ -200,7 +215,8 @@ function deleteQuestion(questionId) {
 
         // Remover o tema se não houver mais perguntas
         if (categories[question.category].length === 0) {
-            delete categories[question.category];
+            delete categories[question.category]; // Remove a categoria do objeto categories
+            saveCategoriesToLocalStorage(); // Atualiza o localStorage para remover a categoria vazia
         }
     }
 
@@ -266,7 +282,11 @@ function shuffle(array) {
     }
 }
 
-// Modifique a função startGame para embaralhar as perguntas
+
+let isGameActive = false;
+
+
+// Função para iniciar o jogo
 function startGame() {
     playerName = $usernameInput.value.trim();
 
@@ -277,12 +297,12 @@ function startGame() {
 
     // Carregar perguntas do localStorage
     loadQuestionsFromLocalStorage();
-    
+    history.pushState(null, null, location.href);
     document.getElementById("game-mode-section").classList.add("hide");
 
     // Atualiza a lista filtrada com base no tema selecionado
     filteredQuestions = questionsList.filter(q => q.category === selectedTheme);
-    console.log("Perguntas filtradas para o jogo:", filteredQuestions); // Verifique as perguntas filtradas
+    console.log("Perguntas filtradas para o jogo:", filteredQuestions);
 
     // Embaralha as perguntas filtradas
     shuffle(filteredQuestions);
@@ -293,6 +313,7 @@ function startGame() {
         return;
     }
 
+    isGameActive = true;
     $usernameInput.parentElement.style.display = "none";
     $selectModeButton.classList.add("hide");
     $themeSelection.classList.add("hide");
@@ -301,17 +322,22 @@ function startGame() {
     currentQuestionIndex = 0;
     totalCorrect = 0;
 
-    // Torna o botão de ajuda visível
-    document.querySelector('.help-button').classList.remove('hide'); // Adicione esta linha
+    // Adiciona o temporizador ao contêiner de perguntas
+    $questionsContainer.appendChild($timerDisplay);
+    $timerDisplay.classList.add('alert', 'alert-warning', 'text-center', 'mt-3');
 
-    // Verifica se o modo de tempo está ativado
-    const isTimeModeActive = document.querySelector('.special-mode[data-mode="tempo"]').classList.contains('active');
-    if (isTimeModeActive) {
-        activateTimeMode(); // Ativa o modo contra o tempo
+    // Torna o botão de ajuda visível
+    document.querySelector('.help-button').classList.remove('hide');
+
+    // Inicia o modo contra o tempo se estiver ativo
+    const isContraTempoActive = document.querySelector('.special-mode[data-mode="contra-tempo"]').classList.contains('active');
+    if (isContraTempoActive) {
+        startTimer(totalTime); // Inicia o temporizador
     }
 
     displayNextQuestion();
 }
+
 // Função para exibir a próxima pergunta
 function displayNextQuestion() {
     resetState();
@@ -379,9 +405,9 @@ document.querySelector('.help-button').addEventListener("click", function() {
 document.querySelector('.special-mode[data-mode="tempo"]').addEventListener("click", function () {
     this.classList.toggle('active'); // Alterna a classe para indicar que o modo está ativo
     if (this.classList.contains('active')) {
-        alert("Modo Contra o Tempo ativado! Você terá 10 segundos para responder cada pergunta.");
+        alert("Modo Relâmpago ativado! Você terá 10 segundos para responder cada pergunta.");
     } else {
-        alert("Modo Contra o Tempo desativado.");
+        alert("Modo Relâmpago desativado.");
     }
 });
 
@@ -568,7 +594,37 @@ function useHelp() {
     }
 }
 
+let totalTime = 60; // Tempo total em segundos para o Modo Contra-Tempo
+let timeModeActive = false; // Variável para controlar se o modo de tempo está ativo
 
+// Evento para o botão "Modo Contra-Tempo"
+document.querySelector('.special-mode[data-mode="contra-tempo"]').addEventListener("click", function () {
+    this.classList.toggle('active'); // Alterna a classe para indicar que o modo está ativo
+    if (this.classList.contains('active')) {
+        alert("Modo Contra-Tempo ativado! Você terá 1 minuto para responder todas as perguntas.");
+        timeModeActive = true; // Ativa o modo de tempo
+        startTimer(totalTime); // Inicia o temporizador
+    } else {
+        alert("Modo Contra-Tempo desativado.");
+        timeModeActive = false; // Desativa o modo de tempo
+        clearInterval(timer); // Para o temporizador se estiver ativo
+    }
+});
+// Função para iniciar o temporizador
+function startTimer(duration) {
+    let timeLeft = duration;
+    $timerDisplay.textContent = `Tempo Restante: ${timeLeft} segundos`;
+
+    timer = setInterval(() => {
+        timeLeft--;
+        $timerDisplay.textContent = `Tempo Restante: ${timeLeft} segundos`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            finishGame(); // Finaliza o jogo quando o tempo acaba
+        }
+    }, 1000);
+}
 document.addEventListener("DOMContentLoaded", function () {
     const timestamp = new Date().toLocaleString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
     const dashboardButton = document.getElementById("dashboard-button");
@@ -636,3 +692,4 @@ function showAdminLeaderboard() {
 document.querySelector('.help-button').addEventListener("click", useHelp);
 // Chame a função loadQuestionsFromLocalStorage quando o programa iniciar
 loadQuestionsFromLocalStorage();
+

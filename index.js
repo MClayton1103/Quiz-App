@@ -514,17 +514,25 @@ document.querySelector('.help-button').classList.add('hide');
 function updateLeaderboard() {
     const savedLeaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
     
-    const timestamp = new Date().toLocaleString('pt-BR', {
-        year: 'numeric', 
-        month: '2-digit', 
-        day: '2-digit', 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit',
-        hour12: false // Para usar o formato 24 horas
-    });
+    // Verifica se o jogador já está no leaderboard
+    const existingEntryIndex = savedLeaderboard.findIndex(entry => entry.player === playerName);
     
-    savedLeaderboard.push({ player: playerName, score: totalCorrect, time: timestamp });
+    if (existingEntryIndex !== -1) {
+        // Atualiza a pontuação se o jogador já estiver no leaderboard
+        savedLeaderboard[existingEntryIndex].score = totalCorrect;
+    } else {
+        const timestamp = new Date().toLocaleString('pt-BR', {
+            year: 'numeric', 
+            month: '2-digit', 
+            day: '2-digit', 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit',
+            hour12: false // Para usar o formato 24 horas
+        });
+        
+        savedLeaderboard.push({ player: playerName, score: totalCorrect, time: timestamp });
+    }
     
     savedLeaderboard.sort((a, b) => b.score - a.score);
     

@@ -182,7 +182,13 @@ function editQuestion(questionId) {
         return { text: newText, correct: false }; // Inicialmente marcar todas como falsas
     });
 
-    const newCorrectAnswerIndex = parseInt(prompt("Digite o índice da resposta correta (0 a 3):")) || question.correctAnswerIndex;
+    const newCorrectAnswerIndexInput = prompt("Digite o índice da resposta correta (0 a 3):");
+    const newCorrectAnswerIndex = parseInt(newCorrectAnswerIndexInput);
+
+if (isNaN(newCorrectAnswerIndex) || newCorrectAnswerIndex < 0 || newCorrectAnswerIndex > 3) {
+    alert("Por favor, insira um índice válido entre 0 e 3.");
+    return; // Sai da função se o índice não for válido
+}
 
     // Marcar a nova resposta correta
     newAnswers[newCorrectAnswerIndex].correct = true;
